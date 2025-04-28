@@ -2,10 +2,28 @@
 
 import Layout from '../layouts/Layout.astro';
 
-// Welcome to Astro! Wondering what to do next? Check out the Astro documentation at https://docs.astro.build
-// Don't want to use any of this? Delete everything in this file, the `assets`, `components`, and `layouts` directories, and start fresh.
+import VeterinarioForm from '../components/VeterinarioForm';
+import VeterinarioList from '../components/VeterinarioList';
+const url = import.meta.env.BACKEND_URL + '/api/veterinarios'; // acá sí puedes usar import.meta.env
+
+let refreshKey = 0;
+
+const handleAddVeterinario = async () => {
+  refreshKey++; // cambiamos refreshKey para forzar recarga
+};
 ---
 
 <Layout>
+	<div class="flex space-x-6">
+		<!-- Formulario para agregar veterinarios -->
+		<div class="flex-1">
+
+			<VeterinarioForm client:load url={url} onAddVeterinario={handleAddVeterinario} />
+		</div>
 	
+		<!-- Lista de veterinarios -->
+		<div class="flex-1">
+			<VeterinarioList client:load url={url} key={refreshKey} />
+		</div>
+	</div>
 </Layout>
